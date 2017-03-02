@@ -509,12 +509,12 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    49,    49,    52,    53,    54,    57,    65,    71,    72,
-      78,    81,    84,    90,    96,   102,   110,   120,   139,   139,
-     140,   141,   144,   145,   146,   147,   148,   149,   150,   151,
-     152,   153,   154,   155,   156,   157,   158,   159,   165,   171,
-     177,   183,   186,   187,   190,   198,   201,   202,   205,   211,
-     219,   220,   226,   232,   238,   244,   245,   246,   249,   254,
-     259,   266,   273,   280
+      78,    81,    84,    90,    96,   102,   110,   121,   140,   140,
+     141,   142,   145,   146,   147,   148,   149,   150,   151,   152,
+     153,   154,   155,   156,   157,   158,   159,   160,   166,   172,
+     178,   184,   187,   188,   191,   199,   202,   203,   206,   212,
+     220,   221,   227,   233,   239,   245,   246,   247,   250,   255,
+     260,   267,   274,   281
 };
 #endif
 
@@ -1546,16 +1546,17 @@ yyreduce:
 #line 111 "parser.y" /* yacc.c:1646  */
     {
 		 token = (yyvsp[-2].str);
-		 insertToken(2,table);
+		 error = insertToken(2,table);
+		 printErrorMessage(error);
 	
 		 table.clear();
      	 s.push(table);
 	  }
-#line 1555 "y.tab.c" /* yacc.c:1646  */
+#line 1556 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 121 "parser.y" /* yacc.c:1646  */
+#line 122 "parser.y" /* yacc.c:1646  */
     {
 				token = (yyvsp[-7].str);
 				error = insertToken(1,table);
@@ -1572,177 +1573,177 @@ yyreduce:
 				error = insertToken(3,table);
 				printErrorMessage(error);
 			}
-#line 1576 "y.tab.c" /* yacc.c:1646  */
+#line 1577 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 160 "parser.y" /* yacc.c:1646  */
+#line 161 "parser.y" /* yacc.c:1646  */
     {    
 				token = (yyvsp[-2].str);
 				error = lookupTable();
 				printErrorMessage(error);
            }
-#line 1586 "y.tab.c" /* yacc.c:1646  */
+#line 1587 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 166 "parser.y" /* yacc.c:1646  */
+#line 167 "parser.y" /* yacc.c:1646  */
     { 
 				token = (yyvsp[-1].str);
 				error = lookupTable();
 				printErrorMessage(error);
 		   }
-#line 1596 "y.tab.c" /* yacc.c:1646  */
+#line 1597 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 172 "parser.y" /* yacc.c:1646  */
+#line 173 "parser.y" /* yacc.c:1646  */
     { 
 				token = (yyvsp[-1].str);
 				error = lookupTable();
 				printErrorMessage(error);
 		   }
-#line 1606 "y.tab.c" /* yacc.c:1646  */
+#line 1607 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 178 "parser.y" /* yacc.c:1646  */
+#line 179 "parser.y" /* yacc.c:1646  */
     { 
 				token = (yyvsp[0].str);
 				error = lookupTable();
 				printErrorMessage(error);
 		   }
-#line 1616 "y.tab.c" /* yacc.c:1646  */
+#line 1617 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 191 "parser.y" /* yacc.c:1646  */
+#line 192 "parser.y" /* yacc.c:1646  */
     { 
 						token = (yyvsp[-6].str);
 						error = lookupTable();
 						printErrorMessage(error);
 		   		   }
-#line 1626 "y.tab.c" /* yacc.c:1646  */
+#line 1627 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 206 "parser.y" /* yacc.c:1646  */
+#line 207 "parser.y" /* yacc.c:1646  */
     { 
 						token = (yyvsp[0].str);
 						error = lookupTable();
 						printErrorMessage(error);
 		 		    }
-#line 1636 "y.tab.c" /* yacc.c:1646  */
+#line 1637 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 212 "parser.y" /* yacc.c:1646  */
+#line 213 "parser.y" /* yacc.c:1646  */
     { 
 						token = (yyvsp[0].str);
 						error = lookupTable();
 						printErrorMessage(error);
 		   		    }
-#line 1646 "y.tab.c" /* yacc.c:1646  */
+#line 1647 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 221 "parser.y" /* yacc.c:1646  */
+#line 222 "parser.y" /* yacc.c:1646  */
     { 
 			v.push_back(s.top());
 			s.pop();
 			table = s.top(); 
 		  }
-#line 1656 "y.tab.c" /* yacc.c:1646  */
+#line 1657 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 227 "parser.y" /* yacc.c:1646  */
+#line 228 "parser.y" /* yacc.c:1646  */
     { 
 			v.push_back(s.top());
 			s.pop();
 			table = s.top();
 		  }
-#line 1666 "y.tab.c" /* yacc.c:1646  */
+#line 1667 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 233 "parser.y" /* yacc.c:1646  */
+#line 234 "parser.y" /* yacc.c:1646  */
     { 
 			v.push_back(s.top());
 			s.pop(); 
 			table = s.top();
 		  }
-#line 1676 "y.tab.c" /* yacc.c:1646  */
+#line 1677 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 239 "parser.y" /* yacc.c:1646  */
+#line 240 "parser.y" /* yacc.c:1646  */
     { 
 			v.push_back(s.top());
 			s.pop();
 			table = s.top();
 		  }
-#line 1686 "y.tab.c" /* yacc.c:1646  */
+#line 1687 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 250 "parser.y" /* yacc.c:1646  */
+#line 251 "parser.y" /* yacc.c:1646  */
     { 	
 					table.clear();
 					s.push(table);
 			   }
-#line 1695 "y.tab.c" /* yacc.c:1646  */
+#line 1696 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 255 "parser.y" /* yacc.c:1646  */
+#line 256 "parser.y" /* yacc.c:1646  */
     { 	
 				    table.clear();
 				    s.push(table);
 			   }
-#line 1704 "y.tab.c" /* yacc.c:1646  */
+#line 1705 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 260 "parser.y" /* yacc.c:1646  */
+#line 261 "parser.y" /* yacc.c:1646  */
     { 	
 				    table.clear();
 				    s.push(table);
 			   }
-#line 1713 "y.tab.c" /* yacc.c:1646  */
+#line 1714 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 267 "parser.y" /* yacc.c:1646  */
+#line 268 "parser.y" /* yacc.c:1646  */
     { 	
 				table.clear();
 				s.push(table);
 			 }
-#line 1722 "y.tab.c" /* yacc.c:1646  */
+#line 1723 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 274 "parser.y" /* yacc.c:1646  */
+#line 275 "parser.y" /* yacc.c:1646  */
     { 	
 				table.clear();
 				s.push(table);
 			 }
-#line 1731 "y.tab.c" /* yacc.c:1646  */
+#line 1732 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 281 "parser.y" /* yacc.c:1646  */
+#line 282 "parser.y" /* yacc.c:1646  */
     { 	
 					v.push_back(s.top());
 					s.pop();
 			   		table.clear();
 					s.push(table);
 			   }
-#line 1742 "y.tab.c" /* yacc.c:1646  */
+#line 1743 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1746 "y.tab.c" /* yacc.c:1646  */
+#line 1747 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1970,7 +1971,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 289 "parser.y" /* yacc.c:1906  */
+#line 290 "parser.y" /* yacc.c:1906  */
 
 
 // Insert token
