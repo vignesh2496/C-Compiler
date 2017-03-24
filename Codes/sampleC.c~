@@ -23,11 +23,8 @@ int main()
 		/* Multi-line
 		Comment */
 		int a[43],f;
-
-		//func[3]=7;
+		f[3]=7;
 		//g=6;
-		//a=6;
-		func(a[f],a[f]);
 		do
 		{
 			temp = temp + 10 * var;

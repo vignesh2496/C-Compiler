@@ -20,6 +20,12 @@
 	extern int commentflag;
 	extern void yyerror(const char*);
 	int error;
+	
+	// By default all are off
+	bool arrayMisuseFlag = false;
+	bool funcMisuseFlag = false;
+	bool mainMisuseFlag = false;
+	bool varMisuseFlag = false;
 %}
 
 %token _GREAT_EQ _LESS_EQ _LOGIC_OR _LOGIC_AND _NOT_EQ _EQUAL _INCR_1 _DECR_1 _INCR_VAL _DECR_VAL _MULT_VAL _DIV_VAL _MOD_VAL _DO _ELSE _FOR _IF _INT _PRINT _SCAN _WHILE _HEADER _PREPROC _STRING _RETURN 
@@ -94,6 +100,18 @@ declist : declist ',' _IDENTIFIER '=' expression
 			error = insertToken(3,table);
 			printErrorMessage(error);
 		} 
+		| declist ',' _IDENTIFIER '[' expression ']'
+		{
+			token = $3;
+			error = insertToken(4,table);
+			printErrorMessage(error);
+		}
+		| _IDENTIFIER '[' expression ']'
+		{
+			token = $1;
+			error = insertToken(4,table);
+			printErrorMessage(error);
+		}
 		| _IDENTIFIER             
 		{
 			token = $1;
@@ -161,30 +179,70 @@ expression : expression '+' expression
 		   | _IDENTIFIER '=' expression 
 		   {    
 				token = $1;
+				// Set possible error flags
+				mainMisuseFlag = true;
+				funcMisuseFlag = true;
+				arrayMisuseFlag = true;
+				error = lookupTable();
+				printErrorMessage(error);
+           }
+           | _IDENTIFIER '[' expression ']' '=' expression
+           {
+           		token = $1;
+           		// Set possible error flags
+				mainMisuseFlag = true;
+				funcMisuseFlag = true;
+				varMisuseFlag = true;
 				error = lookupTable();
 				printErrorMessage(error);
            }
 		   | _IDENTIFIER _INCR_1
 		   { 
 				token = $1;
+				// Set possible error flags
+				mainMisuseFlag = true;
+				funcMisuseFlag = true;
+				arrayMisuseFlag = true;
 				error = lookupTable();
 				printErrorMessage(error);
 		   }
 		   | _IDENTIFIER _DECR_1
 		   { 
 				token = $1;
+				// Set possible error flags
+				mainMisuseFlag = true;
+				funcMisuseFlag = true;
+				arrayMisuseFlag = true;
 				error = lookupTable();
 				printErrorMessage(error);
 		   }	
 		   | _IDENTIFIER
 		   { 
 				token = $1;
+				// Set possible error flags
+				mainMisuseFlag = true;
+				funcMisuseFlag = true;
+				arrayMisuseFlag = true;
+				error = lookupTable();
+				printErrorMessage(error);
+		   }
+		   | _IDENTIFIER '[' expression ']'
+		   { 
+				token = $1;
+				// Set possible error flags
+				varMisuseFlag = true;
+				mainMisuseFlag = true;
+				funcMisuseFlag = true;
 				error = lookupTable();
 				printErrorMessage(error);
 		   }
 		   | _IDENTIFIER '(' expression ',' expression ')' 
 		   { 
-				token = $1;
+			 	token = $1;
+				// Set possible error flags
+				mainMisuseFlag = true;
+				varMisuseFlag = true;
+				arrayMisuseFlag = true;
 				error = lookupTable();
 				printErrorMessage(error);
 		   }
@@ -205,12 +263,40 @@ io_statement : _PRINT '(' _STRING ',' expression ')' ';'
 identifieraddr_list : identifieraddr_list ',' '&' _IDENTIFIER
 					{ 
 						token = $4;
+						// Set possible error flags
+						mainMisuseFlag = true;
+						funcMisuseFlag = true;
+						arrayMisuseFlag = true;
 						error = lookupTable();
 						printErrorMessage(error);
 		 		    }
 					| '&' _IDENTIFIER
 					{ 
 						token = $2;
+						// Set possible error flags
+						mainMisuseFlag = true;
+						funcMisuseFlag = true;
+						arrayMisuseFlag = true;
+						error = lookupTable();
+						printErrorMessage(error);
+		   		    }
+		   		    | identifieraddr_list ',' '&' _IDENTIFIER '[' expression ']'
+		   		    { 
+						token = $4;
+						// Set possible error flags
+						mainMisuseFlag = true;
+						funcMisuseFlag = true;
+						varMisuseFlag = true;
+						error = lookupTable();
+						printErrorMessage(error);
+		 		    }
+		 		    | '&' _IDENTIFIER '[' expression ']'
+					{ 
+						token = $2;
+						// Set possible error flags
+						mainMisuseFlag = true;
+						funcMisuseFlag = true;
+						varMisuseFlag = true;
 						error = lookupTable();
 						printErrorMessage(error);
 		   		    }
@@ -297,12 +383,48 @@ int insertToken(int TOKENID, map<string,pair<string,int> > &table)
 	{
 		case 1 : table[token].first = "FUNCTION"; break;
 		case 2 : table[token].first = "MAIN_FUNCTION"; break;
-		case 3 : table[token].first = "INTEGER_VARIABLE"; 
+		case 3 : table[token].first = "INTEGER_VARIABLE"; break;
+		case 4 : table[token].first = "INTEGER_ARRAY"; break;
 	}
 	s.pop();
 	s.push(table);
 	return 0;
 }
+
+void resetFlags()
+{
+	arrayMisuseFlag = false;
+	funcMisuseFlag = false;
+	mainMisuseFlag = false;
+	varMisuseFlag = false;
+}
+
+// Check type
+int checkType(map<string, pair<string, int > > temp)
+{
+	if(funcMisuseFlag && temp[token].first == "FUNCTION")
+	{
+		resetFlags();
+		return 6;
+	}
+	if(mainMisuseFlag && temp[token].first == "MAIN_FUNCTION")
+	{
+		resetFlags();
+		return 7;
+	}
+	if(varMisuseFlag && temp[token].first == "INTEGER_VARIABLE")
+	{
+		resetFlags();
+		return 8;
+	}
+	if(arrayMisuseFlag && temp[token].first == "INTEGER_ARRAY")
+	{
+		resetFlags();
+		return 9;
+	}
+	resetFlags();
+	return 0;
+} 
 
 // Look up table
 int lookupTable()
@@ -314,6 +436,12 @@ int lookupTable()
 		map<string, pair<string, int > > temp = s.top();
 		if(temp.find(token) != temp.end())
 		{
+			// Checking type mismatch
+			if(error = checkType(temp))
+				return error;
+				
+			// Turn misuse off if there is no misuse
+			arrayMisuseFlag = false;
 			flag = false;
 			break;
 		}
@@ -355,9 +483,15 @@ void printErrorMessage(int errorcode)
 	switch(errorcode)
 	{
 		case 4 : cout << endl << "ERROR 4 : Redeclaring variable " << token << " at line "<< linecount << endl << endl; 
-				 exit(4); break;  
+				 printf("\nPARSING FAILED!\n\n\n"); exit(4); break;  
 		case 5 : cout << endl << "ERROR 5 : Undeclared variable " << token << " at line "<< linecount << endl << endl; 
-				 exit(5); break; 
+				 printf("\nPARSING FAILED!\n\n\n"); exit(5); break; 
+		case 6 : cout << endl << "ERROR 6 : Type mismatch for function " << token << " at line "<< linecount << endl << endl; 
+				 printf("\nPARSING FAILED!\n\n\n"); exit(6); break;
+		case 7 : cout << endl << "ERROR 7 : Type mismatch for " << token << " at line "<< linecount << endl << endl; 
+				 printf("\nPARSING FAILED!\n\n\n"); exit(7); break;
+		case 8 : cout << endl << "ERROR 8 : Type mismatch for integer variable " << token << " at line "<< linecount << endl << endl; printf("\nPARSING FAILED!\n\n\n"); exit(8); break;
+		case 9 : cout << endl << "ERROR 9 : Type mismatch for integer array " << token << " at line "<< linecount << endl << endl; printf("\nPARSING FAILED!\n\n\n"); exit(9); break;		 
 	}
 }
 
