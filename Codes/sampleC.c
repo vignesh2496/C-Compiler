@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 int func(int a , int b)
@@ -9,6 +10,8 @@ int main()
 {
 	// Single Line Comment
 	int var;
+	int a,b,c;
+	a = b + c;
 	for(var = 10; var <= 100; var++,var--)
 	{
 		int temp = 0;

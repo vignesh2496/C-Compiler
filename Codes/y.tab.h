@@ -45,79 +45,52 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    _GREAT_EQ = 258,
-    _LESS_EQ = 259,
-    _LOGIC_OR = 260,
-    _LOGIC_AND = 261,
-    _NOT_EQ = 262,
-    _EQUAL = 263,
-    _INCR_1 = 264,
-    _DECR_1 = 265,
-    _INCR_VAL = 266,
-    _DECR_VAL = 267,
-    _MULT_VAL = 268,
-    _DIV_VAL = 269,
-    _MOD_VAL = 270,
-    _DO = 271,
-    _ELSE = 272,
-    _FOR = 273,
-    _IF = 274,
-    _INT = 275,
-    _PRINT = 276,
-    _SCAN = 277,
-    _WHILE = 278,
-    _HEADER = 279,
-    _PREPROC = 280,
-    _STRING = 281,
-    _RETURN = 282,
-    _CONSTANT = 283,
-    _IDENTIFIER = 284,
-    _MAIN = 285,
-    MOD_VAL = 286
+    FOR = 258,
+    RETURN = 259,
+    PRINT = 260,
+    PRE = 261,
+    HEAD = 262,
+    STRING = 263,
+    ADDASS = 264,
+    INT = 265,
+    DB = 266,
+    VOID = 267,
+    MAIN = 268,
+    INTV = 269,
+    FLOATV = 270,
+    ID = 271
   };
 #endif
 /* Tokens.  */
-#define _GREAT_EQ 258
-#define _LESS_EQ 259
-#define _LOGIC_OR 260
-#define _LOGIC_AND 261
-#define _NOT_EQ 262
-#define _EQUAL 263
-#define _INCR_1 264
-#define _DECR_1 265
-#define _INCR_VAL 266
-#define _DECR_VAL 267
-#define _MULT_VAL 268
-#define _DIV_VAL 269
-#define _MOD_VAL 270
-#define _DO 271
-#define _ELSE 272
-#define _FOR 273
-#define _IF 274
-#define _INT 275
-#define _PRINT 276
-#define _SCAN 277
-#define _WHILE 278
-#define _HEADER 279
-#define _PREPROC 280
-#define _STRING 281
-#define _RETURN 282
-#define _CONSTANT 283
-#define _IDENTIFIER 284
-#define _MAIN 285
-#define MOD_VAL 286
+#define FOR 258
+#define RETURN 259
+#define PRINT 260
+#define PRE 261
+#define HEAD 262
+#define STRING 263
+#define ADDASS 264
+#define INT 265
+#define DB 266
+#define VOID 267
+#define MAIN 268
+#define INTV 269
+#define FLOATV 270
+#define ID 271
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 34 "parser2.y" /* yacc.c:1909  */
+#line 30 "parserexam2.y" /* yacc.c:1909  */
 
-	int number;
-    char *str;
+	struct node
+	{
+		int type;
+		char *token;
+	}all;
 
-#line 121 "y.tab.h" /* yacc.c:1909  */
+#line 94 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
